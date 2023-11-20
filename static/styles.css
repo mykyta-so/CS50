@@ -1,0 +1,5 @@
+/* Color of table's strips */
+tbody>tr:nth-child(odd)>td,
+tbody>tr:nth-child(odd)>th {
+   background-color: #F5F5F5;
+ }

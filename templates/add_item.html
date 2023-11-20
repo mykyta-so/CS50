@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add Item
+{% endblock %}
+
+{% block main %}
+
+    <div class="text-center">
+        {{ must }}
+    </div>
+    <br>
+
+    <form action="/add_item" method="post">
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="name" name="name" placeholder="Name" type="text">
+        </div>
+        <div class="mb-3">
+            <select id="type" name="type" class="form-select mx-auto w-auto">
+                <option disabled selected>Select Category</option>
+                {% for row in type_list %}
+                    <option value="{{ row['type'] }}">{{ row['emoji'] }} {{ row['type'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-primary" type="submit">Add</button>
+        </div>
+
+    </form>
+
+
+{% endblock %}

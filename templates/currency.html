@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Choose Currency
+{% endblock %}
+
+{% block main %}
+
+    <div class="text-center">
+        {{ must }}
+    </div>
+
+    <br>
+
+    <div class="text-center text-primary">
+        <h3>{{ actual_currency }}</h3>
+    </div>
+
+    <br>
+
+    <form action="/currency" method="post">
+        <div class="mb-3">
+            <select id="currency" name="currency" class="form-select mx-auto w-auto">
+                <option disabled selected>Currency</option>
+                {% for currency in currency_list %}
+                    <option value="{{ currency['currency'] }}">{{ currency['currency'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-primary" type="submit">Choose</button>
+        </div>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Delete Blob
+{% endblock %}
+
+{% block main %}
+
+    <div class="text-center">
+        {{ must }}
+    </div>
+    <br>
+
+    <form action="/delete_item" method="post">
+
+        <div>
+            <select id="selected_blob_name" name="selected_blob_name" class="form-select mx-auto w-auto">
+                <option disabled selected>Select Item</option>
+                {% for row in all_blobs %}
+                    <option value="{{ row['blob_name'] }}">{{ row['emoji'] }} {{ row['blob_name'] }} - {{ row['type'] }} </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <br>
+
+        <div class="text-center">
+            <button class="btn btn-danger" type="submit">Delete</button>
+        </div>
+
+    </form>
+
+{% endblock %}

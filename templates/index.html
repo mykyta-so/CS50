@@ -1,0 +1,180 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block main %}
+
+<div class="container">
+    <div>
+        {{ must }}
+    </div>
+    <div>
+        <form action="transfer" method="post">
+            <div class="row row-cols-auto  justify-content-center gx-2 gy-2">
+                <div class="col">
+                    <select id="from" name="from" class="form-select mx-auto w-auto">
+                        <option disabled selected>From</option>
+                        {% for row in income_account %}
+                            <option value="{{ row['emoji'] }} {{ row['blob_name'] }} {{ row['type'] }}">{{ row['emoji'] }} {{ row['blob_name'] }} {{ row['type'] }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                    <select id="too" name="to" class="form-select mx-auto w-auto">
+                    </select>
+                </div>
+                <div class="col">
+                    <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="amount" name="amount" placeholder="Amount" type="float">
+                </div>
+                <div class="col text-center">
+                    <button class="btn btn-primary mx-auto w-auto" type="submit">Send</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <br><br>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <thead class="text-primary">
+                                <tr>
+                                    <th>Income</th>
+                                    <th class="text-end fw-light">Received: {{ received }} {{ currency }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in income %}
+                                    <tr>
+                                        <td>{{ row['emoji'] }} {{ row['blob_name'] }}</td>
+                                        <td class="text-end">{{ row['money'] }} {{ currency }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <thead class="text-primary">
+                                <tr>
+                                    <th>Accounts</th>
+                                    <th class="text-end fw-light">Balance: {{ balance }} {{ currency }}</th>
+                                </tr>
+                            </thead>
+                            <tbody  class="borderless ">
+                                {% for row in account %}
+                                    <tr>
+                                        <td>{{ row['emoji'] }} {{ row['blob_name'] }}</td>
+                                        <td class="text-end">{{ row['money'] }} {{ currency }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <thead class="text-primary">
+                                <tr>
+                                    <th>Expenses</th>
+                                    <th class="text-end fw-light">Spent: {{ spent }} {{ currency }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in expenses %}
+                                    <tr>
+                                        <td>{{ row['emoji'] }} {{ row['blob_name'] }}</td>
+                                        <td class="text-end">{{ row['money'] }} {{ currency }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+            </div>
+            <div class="col-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <div class="row">
+                                <div class="col text-primary">
+                                    <b>Today's Transactions</b>
+                                </div>
+                                <div class="col text-end text-primary fw-light">
+                                    Spent Today: {{ spent_today }} {{ currency }}
+                                </div>
+                            </div>
+                            <br>
+                        </h6>
+                        <table class="table table-borderless">
+                            <thead class="text-primary">
+                                <tr>
+                                    <th class="fw-light">From</th>
+                                    <th class="fw-light">To</th>
+                                    <th class="fw-light">Amount</th>
+                                    <th class="fw-light">Date</th>
+                                    <th class="fw-light">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in transactions_today %}
+                                    <tr>
+                                        <td>{{ row['from_emoji'] }} {{ row['fromm'] }} </td>
+                                        <td>{{ row['to_emoji'] }} {{ row['too'] }}</td>
+                                        <td>{{ row['amount'] }} {{ currency }}</td>
+                                        <td>{{ row['transaction_date'] }}</td>
+                                        <td><form action="/delete_transaction" method="post"><button class="btn btn-outline-danger btn-sm" name="tr_delete" type="submit" value="{{ row['id'] }}">Del</button></form></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    let from_selector = document.getElementById('from')
+    let to_selector = document.getElementById('to')
+
+    from_selector.onchange = function() {
+        account_type = from_selector.value;
+        // alert(account_type);
+
+        fetch('/get_options/' + account_type)
+
+        .then(response => response.json())
+        .then(data => {
+
+            var select = document.getElementById('too');
+            select.innerHTML = "";
+
+
+            for (var key in data) {
+                if (data.hasOwnProperty(key)) {
+                    var option = document.createElement('option');
+                    option.value = data[key];
+                    option.text = data[key];
+                    select.appendChild(option);
+                }
+            }
+        })
+    }
+
+</script>
+
+{% endblock %}

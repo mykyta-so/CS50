@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Emoji
+{% endblock %}
+
+{% block main %}
+
+
+    <div class="text-center">
+        {{ must }}
+    </div>
+    <br>
+
+    <form action="/emoji" method="post">
+
+        <div>
+            <select id="type" name="type" class="form-select mx-auto w-auto mb-3">
+                <option disabled selected>Select Category</option>
+                {% for row in type_list %}
+                    <option value="{{ row['type'] }}">{{ emoji_list[loop.index0] }} {{ row['type'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <input autocomplete="on" autofocus class="form-control mx-auto w-auto" id="emoji" name="emoji" placeholder="emoji" type="emoji">
+        </div>
+
+        <div class="text-center mb-3">
+            <button class="btn btn-primary" type="submit">Add</button>
+        </div>
+
+    </form>
+
+    <div class="text-center fw-lighter">
+        <br><br>
+        <p>For Mac keyboards: [CTRL] + [CMD] + [Space]</p>
+        <p>For Windows keyboards: [Windows logo key] + [.]</p>
+    </div>
+
+{% endblock %}
